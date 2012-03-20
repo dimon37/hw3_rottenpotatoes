@@ -17,7 +17,6 @@ Background: movies have been added to database
   | 2001: A Space Odyssey   | G      | 6-Apr-1968   |
   | The Incredibles         | PG     | 5-Nov-2004   |
   | Raiders of the Lost Ark | PG     | 12-Jun-1981  |
-  | Pulp Fiction            | R      | 21-Jun-1993  |
   | Chicken Run             | G      | 21-Jun-2000  |
 
   And  I am on the RottenPotatoes home page
@@ -25,30 +24,34 @@ Background: movies have been added to database
   
 Scenario: restrict to movies with 'PG' or 'R' ratings
   # enter step(s) to check the 'PG' and 'R' checkboxes
-  When I check "ratings[R]"
-  When I check "ratings[PG]"
+  And I check the following ratings: R, PG
   # enter step(s) to uncheck all other checkboxes
-  When I uncheck "ratings[G]"
-  When I uncheck "ratings[PG-13]"
-  When I uncheck "ratings[NC-17]"
+  And I uncheck the following ratings: G, PG-13, NC-17
   # enter step to "submit" the search form on the homepage
-  When I press "Refresh"
+  And I press "Refresh"
   Then I should be on the RottenPotatoes home page
   # enter step(s) to ensure that PG and R movies are visible
-  Then I should see "Amelie"
-  Then I should see "When Harry Met Sally"
-  Then I should see "The Terminator"
-  Then I should see "The Incredibles"
-  Then I should see "Raiders of the Lost Ark"
+  And I should see "Amelie"
+  And I should see "When Harry Met Sally"
+  And I should see "The Terminator"
+  And I should see "The Incredibles"
+  And I should see "Raiders of the Lost Ark"
   # enter step(s) to ensure that other movies are not visible
-  Then I should not see "Alladin"
-  Then I should not see "Chocolat"
-  Then I should not see "The Help"
-  Then I should not see "2001: A Space Oddyssey"
-  Then I should not see "Chicken Run"
+  And I should not see "Alladin"
+  And I should not see "Chocolat"
+  And I should not see "The Help"
+  And I should not see "2001: A Space Oddyssey"
+  And I should not see "Chicken Run"
+#  And I should see "Amelie" before "The Terminator"
 
 Scenario: no ratings selected
-  # see assignment
+  When I uncheck the following ratings: R, G, PG, PG-13, NC-17
+  And I press "Refresh"
+  Then I should be on the RottenPotatoes home page
+  And I should see 0 movies
 
 Scenario: all ratings selected
-  # see assignment
+  When I check the following ratings: R, G, PG, PG-13, NC-17
+  And I press "Refresh"
+  Then I should be on the RottenPotatoes home page
+  And I should see all of the movies

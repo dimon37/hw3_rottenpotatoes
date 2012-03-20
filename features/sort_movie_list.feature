@@ -23,7 +23,16 @@ Background: movies have been added to database
 
 Scenario: sort movies alphabetically
   # your steps here
+  And I check the following ratings: R, G, PG, PG-13, NC-17
+  And I press "Refresh"
+  And I follow "title_header"
+  Then I should be on the RottenPotatoes home page
+  And I should see "Amelie" before "The Terminator"
 
 Scenario: sort movies in increasing order of release date
-  # your steps here
+  And I check the following ratings: R, G, PG, PG-13, NC-17
+  And I press "Refresh"
+  And I follow "release_date_header"
+  Then I should be on the RottenPotatoes home page
+  And I should see "1968-04-06" before "2011-08-10"
 
